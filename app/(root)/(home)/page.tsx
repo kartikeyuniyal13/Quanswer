@@ -8,98 +8,12 @@ import { HomePageFilters } from "@/constants/filters";
 import LocalSearchbar from "@/components/shared/Search/LocalSearch";
 import HomeFilter from "@/components/Home/HomeFilter";
 import QuestionCard from "@/components/Card/QuestionCard";
+import { getQuestions } from "@/lib/actions/question.action";
 
-const questions = [
-  {
-    _id: "1",
-    title: "Best Practices for data fetching in a Next.js app",
-    tags: [
-      { _id: "1", name: "React" },
-      { _id: "2", name: "Next.js" },
-    ],
-    author: {
-      _id: "a1",
-      name: "Sujata",
-      picture: "url/to/picture1.jpg",
-    },
-    votes: 10,
-    answers: [
-      {
-        /* answer object */
-      },
-      {
-        /* answer object */
-      },
-    ], // Assuming object structure for answers
-    views: 100,
-    createdAt: new Date("1998-08-01T18:30:00.000Z"),
-  },
-  {
-    _id: "2",
-    title: "Redux toolkit Not Updating State as Expected",
-    tags: [{ _id: "1", name: "React" }],
-    author: {
-      _id: "a2",
-      name: "Mriganka",
-      picture: "url/to/picture2.jpg",
-    },
-    votes: 25,
-    answers: [
-      {
-        /* answer object */
-      },
-      {
-        /* answer object */
-      },
-    ], // Assuming object structure for answers
-    views: 1000,
-    createdAt: new Date("2021-08-01T18:30:00.000Z"),
-  },
-  {
-    _id: "3",
-    title: "How do I use express as a custom server in NextJS",
-    tags: [{ _id: "1", name: "Next.js" }],
-    author: {
-      _id: "a3",
-      name: "Adrian",
-      picture: "url/to/picture3.jpg",
-    },
-    votes: 1,
-    answers: [
-      {
-        /* answer object */
-      },
-      {
-        /* answer object */
-      },
-    ], // Assuming object structure for answers
-    views: 10,
-    createdAt: new Date("2023-08-01T18:30:00.000Z"),
-  },
-  {
-    _id: "4",
-    title: "cascading Deletes in SQLAlchemy",
-    tags: [{ _id: "1", name: "Python" }],
-    author: {
-      _id: "a4",
-      name: "Sujata",
-      picture: "url/to/picture4.jpg",
-    },
-    votes: 100000,
-    answers: [
-      {
-        /* answer object */
-      },
-      {
-        /* answer object */
-      },
-    ], // Assuming object structure for answers
-    views: 5000000,
-    createdAt: new Date("2021-08-01T18:30:00.000Z"),
-  },
-];
+export default async function Home() {
 
-export default function Home() {
+  const result = await getQuestions({});
+  console.log(result.questions)
 
   return (
     <>
@@ -130,7 +44,7 @@ export default function Home() {
       </div>
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length>0 ?questions.map((question) => (
+        {result.questions.length>0 ?result.questions.map((question) => (
           
           <QuestionCard 
           key={question._id}

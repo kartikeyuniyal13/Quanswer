@@ -23,12 +23,18 @@ export const getTimeStamp = (createdAt: Date): string => {
   return "just now";
 };
 
-export const formatNumber = (num: number): string => {
+export const formatNumber = (num: number | undefined | null): string => {
+  if (num === undefined || num === null) {
+    return '';
+  }
+
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
   }
+  
   if (num >= 1000) {
     return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
   }
+  
   return num.toString();
 };

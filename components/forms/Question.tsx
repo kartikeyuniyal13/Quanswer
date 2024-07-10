@@ -19,13 +19,22 @@ import { Input } from "@/components/ui/input"
 import { QuestionsSchema } from '@/lib/validations'
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
-import { createQuestion } from '@/lib/actions/question.action';
+import { createQuestions } from '@/lib/actions/question.action';
+import { title } from 'process';
+import { Inter } from 'next/font/google';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const activity:any="create"
 
+interface Props{
+    mongoUserId:string
 
-const Question = () => {
+}
+
+const Question = ({mongoUserId}:Props) => {
+    const router=useRouter();
+    const pathname=usePathname();
     const editorRef = useRef(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
    
@@ -77,7 +86,15 @@ const Question = () => {
             setIsSubmitting(true);
         
             try {
-             await createQuestion({});
+             await createQuestions({
+              title:values.title,
+              content:values.description,
+              tags:values.tags,
+              author:JSON.parse(mongoUserId),
+              path:pathname
+             });
+             //may change it to questions page later
+             router.push('/')
             } catch (error) {
                 console.log(error)
             } finally {
