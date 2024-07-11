@@ -2,7 +2,7 @@ import React from 'react';
 import Question from '@/components/forms/Question';
 import { redirect } from 'next/navigation';
 import { getUserById } from '@/lib/actions/user.action';
-import { auth } from '@clerk/nextjs/server';
+//import { auth } from '@clerk/nextjs/server';
 
 const Page = async () => {
   // const { userId } = auth();
@@ -20,7 +20,7 @@ const Page = async () => {
   
   if (!mongoUser) {
     // Handle the case where the user is not found
-    console.error('User not found');
+    
     return (
       <div>
         <h1 className='h1-bold text-dark100_light900'>User not found</h1>

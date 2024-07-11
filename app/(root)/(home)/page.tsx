@@ -13,7 +13,7 @@ import { getQuestions } from "@/lib/actions/question.action";
 export default async function Home() {
 
   const result = await getQuestions({});
-  console.log(result.questions)
+ 
 
   return (
     <>
@@ -44,20 +44,23 @@ export default async function Home() {
       </div>
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length>0 ?result.questions.map((question) => (
+        
+        {
+          result && result.questions &&
+        result.questions.length>0 ?result.questions.map((question) => (
           
-          <QuestionCard 
-          key={question._id}
+          <QuestionCard
+          
           _id={question._id}
+          key={question._id}
           title={question.title}
           tags={question.tags}
           author={question.author}
-          votes={question.votes}
+          upvotes={question.upvotes}
           answers={question.answers}
           views={question.views}
           createdAt={question.createdAt}
-
-          />)):<NoResults
+        />)):<NoResults
           title="No Questions Found"
           description="Be the first one to ask a question!"
           link="/" 

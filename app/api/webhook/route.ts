@@ -1,7 +1,8 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-
+import { createUser, deleteUser, updateUser } from '@/lib/actions/user.action'
+import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
 
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -52,13 +53,47 @@ export async function POST(req: Request) {
  
   const eventType = evt.type;
   if(eventType === 'user.created'){
+    const {id,first_name,last_name,username,email_addresses,image_url}=evt.data
     const mongoUser=await createUser({
         clerkId:id,
         name:`${first_name}${last_name? `${last_name}`:''}`,
-        username:username,
-        email:email_addresses[0].email_addresses,
+        username:username!,
+        email:email_addresses[0].email_address,
         picture:image_url,
     })
+    return NextResponse.json({message:'OK',user:mongoUser}) 
+
   }
+  
+  if(eventType === 'user.updated'){
+    const {id,first_name,last_name,username,email_addresses,image_url}=evt.data
+
+    const mongoUser =await updateUser({clerkId:id,
+      
+      updateData:{
+      name:`${first_name}${last_name? `${last_name}`:''}`,
+      username:username!,
+      email:email_addresses[0].email_address,
+      picture:image_url,
+    
+    },
+  path: `/profile/${id}`
+})
+  return NextResponse.json({message:'OK',user:mongoUser})
+  }
+  
+    
+  if(eventType === 'user.deleted'){
+    const {id}=evt.data
+    const mongoUser=await deleteUser({
+        clerkId:id!,
+    })
+    return NextResponse.json({message:'OK',user:mongoUser}) 
+
+  }
+
+
+
+
   return new Response('', { status: 200 })
 }
