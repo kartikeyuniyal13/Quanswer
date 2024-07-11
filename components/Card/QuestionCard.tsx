@@ -1,4 +1,3 @@
-
 import React from "react";
 import Link from "next/link";
 import RenderTag from "../shared/RenderTag";
@@ -18,7 +17,7 @@ interface Props {
     picture: string;
   };
   votes: number;
-  answers: Array<object>;
+  answers: string[]; // Assuming answers are IDs referencing Answer documents
   views: number;
   createdAt: Date;
 }
@@ -34,7 +33,7 @@ const QuestionCard = ({
   createdAt,
 }: Props) => {
   return (
-    <div className="card-wrapper  w-full rounded-lg  p-9 sm:px-11">
+    <div className="card-wrapper w-full rounded-lg p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
@@ -56,13 +55,13 @@ const QuestionCard = ({
         ))}
       </div>
 
-      {/*  */}
+      {/* Metrics */}
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
           imgUrl="/assets/icons/avatar.svg"
           alt="user"
           value={author.name}
-          title= {getTimeStamp(createdAt)}
+          title={getTimeStamp(createdAt)}
           textStyles="small-medium text-dark400_light800"
           href={`/profile/${author._id}`}
           isAuthor
@@ -77,7 +76,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="answers"
-          value={formatNumber(answers.length)}
+          value={formatNumber(answers.length)} // Assuming answers are IDs
           title=" Answers"
           textStyles="small-medium text-dark400_light800"
         />
