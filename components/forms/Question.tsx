@@ -101,7 +101,7 @@ const Question = ({mongoUserId}:Props) => {
               setIsSubmitting(false);
             }
         
-            console.log(values);
+         
           }
       
       return (
