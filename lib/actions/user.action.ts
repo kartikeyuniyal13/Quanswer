@@ -72,3 +72,19 @@ export async function deleteUser(params: DeleteUserParams) {
     throw err;
   }
 }
+
+
+export async function getAllUsers(){
+try{
+
+connectToDatabase();
+const users=await User.find({}).sort({createdAt:-1})
+return users;
+}catch(error){
+    console.log(error);
+    throw new Error('Users not found');
+
+}
+}
+
+
