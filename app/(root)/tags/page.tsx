@@ -1,12 +1,12 @@
 import Filter from "@/components/shared/Filter";
 import NoResults from "@/components/shared/NoResults";
-import LocalSearchbar from "@/components/shared/search/LocalSearch";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
 import Link from "next/link";
 import React from "react";
 
-const Community = async () => {
+const Page = async () => {
   const results = await getAllTags({});
   return (
     <>
@@ -61,4 +61,4 @@ const Community = async () => {
   );
 };
 
-export default Community;
+export default Page;

@@ -3,7 +3,7 @@ import { HomePageFilters } from "@/constants/filters";
 import React from "react";
 import { Button } from "../ui/button";
 
-const HomeFilter = () => {
+const HomeFilters = () => {
   const active = "newest";
 
   return (
@@ -27,4 +27,4 @@ const HomeFilter = () => {
   );
 };
 
-export default HomeFilter;
+export default HomeFilters;

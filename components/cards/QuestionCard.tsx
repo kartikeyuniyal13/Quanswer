@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
-import { formatNumber, getTimeStamp } from "@/lib/utils";
+import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 interface Props {
   _id: string;
@@ -16,8 +16,8 @@ interface Props {
     name: string;
     picture: string;
   };
-  votes: number;
-  answers: string[]; // Assuming answers are IDs referencing Answer documents
+  upvotes:String[];
+  answers: Array<object>;
   views: number;
   createdAt: Date;
 }
@@ -27,17 +27,17 @@ const QuestionCard = ({
   title,
   tags,
   author,
-  votes,
+  upvotes,
   answers,
   views,
   createdAt,
 }: Props) => {
   return (
-    <div className="card-wrapper w-full rounded-lg p-9 sm:px-11">
+    <div className="card-wrapper  w-full rounded-lg  p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
-            {getTimeStamp(createdAt)}
+            {getTimestamp(createdAt)}
           </span>
           <Link href={`/question/${_id}`}>
             <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
@@ -55,13 +55,13 @@ const QuestionCard = ({
         ))}
       </div>
 
-      {/* Metrics */}
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
+        {/* AUTHOR PIC */}
         <Metric
           imgUrl={author.picture}
           alt="user"
           value={author.name}
-          title={getTimeStamp(createdAt)}
+          title=" - asked 1 hour ago" // -----> TODO: Add time ago
           textStyles="small-medium text-dark400_light800"
           href={`/profile/${author._id}`}
           isAuthor
@@ -69,21 +69,22 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
-          value={formatNumber(votes)}
+          value={formatAndDivideNumber(upvotes.length)}
           title=" Votes"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="answers"
-          value={formatNumber(answers.length)} // Assuming answers are IDs
+          value={formatAndDivideNumber(answers.length)}
           title=" Answers"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="Upvotes"
-          value={formatNumber(views)}
+          value={formatAndDivideNumber(views)}
+          // value={views}
           title=" Views"
           textStyles="small-medium text-dark400_light800"
         />

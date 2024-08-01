@@ -1,28 +1,27 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-let isConnected = false;
+let isConnected: boolean = false;
 
 export const connectToDatabase = async () => {
-    mongoose.set('strictQuery', true);
+  mongoose.set("strictQuery", true);
 
-    if (!process.env.MONGODB_URI) {
-        return console.error('MONGODB_URI is missing');
-    }
+  //   if MONGODB_URL is not set, then throw an error
+  if (!process.env.MONGODB_URL) {
+    return console.log("MONGODB_URL not found");
+  }
 
-    if (isConnected) {
-        console.log('Using existing connection');
-        return;
-    }
+  if (isConnected) {
+    return console.log("MONGODB is already connected");
+  }
 
-    try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: 'Quanswer'
-           // useNewUrlParser: true,
-            //useUnifiedTopology: true
-        });
-        isConnected = true; // Update the connection status
-        console.log('Database connection established');
-    } catch (error) {
-        console.error('Error connecting to database', error);
-    }
+  try {
+    await mongoose.connect(process.env.MONGODB_URL, {
+      dbName: "Quanswer",
+    });
+
+    isConnected = true;
+    // console.log("MongoDB connected");
+  } catch (error) {
+    console.log("MongoDB not connected");
+  }
 };

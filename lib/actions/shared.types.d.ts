@@ -125,7 +125,7 @@ export interface GetAllUsersParams {
   page?: number;
   pageSize?: number;
   filter?: string;
-  searchQuery?: string; // Search by name or username
+  searchQuery?: string; // Add searchQuery parameter
 }
 
 export interface UpdateUserParams {
