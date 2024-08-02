@@ -26,22 +26,25 @@ import { useAuth } from "@clerk/nextjs";
 
 interface Props {
   mongoUserId: string;
+  type?: string;
+  questionDetails?: string;
 }
 
-const type: any = "create";
-
-const Question = ({ mongoUserId }: Props) => {
+const Question = ({ mongoUserId,type,questionDetails }: Props) => {
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const path = usePathname();
   const { mode } = useTheme();
+  
+
+  const parsedQuestionDetails = JSON.parse(questionDetails||"");
 
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
-      title: "",
-      explanation: "",
+      title: parsedQuestionDetails.title || "",
+      explanation: parsedQuestionDetails.content || "",
       tags: [],
     },
   });
@@ -260,9 +263,9 @@ const Question = ({ mongoUserId }: Props) => {
           className="primary-gradient w-fit !text-light-900"
         >
           {isSubmitting ? (
-            <>{type === "edit" ? "Editing" : "Posting..."}</>
+            <>{type === "Edit" ? "Editing" : "Posting..."}</>
           ) : (
-            <>{type === "edit" ? "Edit" : "Ask a Question"}</>
+            <>{type === "Edit" ? "Edit" : "Ask a Question"}</>
           )}
         </Button>
       </form>

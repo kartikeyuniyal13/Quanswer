@@ -3,6 +3,8 @@ import Link from "next/link";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface Props {
   _id: string;
@@ -15,11 +17,13 @@ interface Props {
     _id: string;
     name: string;
     picture: string;
+    clerkId: string;
   };
-  upvotes:String[];
+  upvotes: string[];
   answers: Array<object>;
   views: number;
   createdAt: Date;
+  clerkId?: string | null;
 }
 
 const QuestionCard = ({
@@ -31,7 +35,9 @@ const QuestionCard = ({
   answers,
   views,
   createdAt,
+  clerkId,
 }: Props) => {
+  const showActionsButtons = clerkId && clerkId === author.clerkId;
   return (
     <div className="card-wrapper  w-full rounded-lg  p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -46,6 +52,11 @@ const QuestionCard = ({
           </Link>
         </div>
         {/* If Signed in add edit delete actions */}
+        <SignedIn>
+          {showActionsButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       {/* Render Tags */}
@@ -61,33 +72,35 @@ const QuestionCard = ({
           imgUrl={author.picture}
           alt="user"
           value={author.name}
-          title=" - asked 1 hour ago" // -----> TODO: Add time ago
+          title={` - ${getTimestamp(createdAt)}`}
           textStyles="small-medium text-dark400_light800"
           href={`/profile/${author._id}`}
           isAuthor
         />
-        <Metric
-          imgUrl="/assets/icons/like.svg"
-          alt="Upvotes"
-          value={formatAndDivideNumber(upvotes.length)}
-          title=" Votes"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/message.svg"
-          alt="answers"
-          value={formatAndDivideNumber(answers.length)}
-          title=" Answers"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/eye.svg"
-          alt="Upvotes"
-          value={formatAndDivideNumber(views)}
-          // value={views}
-          title=" Views"
-          textStyles="small-medium text-dark400_light800"
-        />
+        <div className=" flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metric
+            imgUrl="/assets/icons/like.svg"
+            alt="Upvotes"
+            value={formatAndDivideNumber(upvotes.length)}
+            title=" Votes"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/assets/icons/message.svg"
+            alt="answers"
+            value={formatAndDivideNumber(answers.length)}
+            title=" Answers"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/assets/icons/eye.svg"
+            alt="Upvotes"
+            value={formatAndDivideNumber(views)}
+            // value={views}
+            title=" Views"
+            textStyles="small-medium text-dark400_light800"
+          />
+        </div>
       </div>
     </div>
   );
