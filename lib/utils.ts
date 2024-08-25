@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import qs from "query-string";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -63,3 +64,43 @@ export const getJoinedMonthYear = (date: Date): string => {
   const year = date?.getFullYear();
   return `${month} ${year}`;
 };
+
+interface UrlQueryParams{
+  params:string;
+  key:string;
+  value:string|null;
+}
+
+/*The formUrlQuery function is used to construct a new URL with updated query parameters based on the current URL and the specified key-value pair,keeping filters,categories the same */
+export const createUrlQuery=({params,key,value}:UrlQueryParams)=>{
+  const currentUrl=qs.parse(params);
+  if(value){
+    currentUrl[key]=value;}
+  
+  return qs.stringifyUrl(
+    {url:window.location.pathname,
+    query:currentUrl
+    },{
+      skipNull: true,
+    }
+  )
+}
+
+interface RemoveKeysFromQueryParams{
+   params:string;
+   keysToRemove:string[];
+
+}
+export const removeKeysFromQuery=({params,keysToRemove}:RemoveKeysFromQueryParams)=>{
+       const currentUrl=qs.parse(params);
+
+       keysToRemove.forEach((key)=>delete currentUrl[key]);
+
+        return qs.stringifyUrl(
+          {url:window.location.pathname,
+          query:currentUrl
+          },{
+            skipNull: true,
+          }
+        )
+}

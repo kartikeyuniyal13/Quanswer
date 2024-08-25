@@ -7,16 +7,16 @@ import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
-  // Get the Questions from DB
+export default async function Home({searchParams}:SearchParamsProps) {
   let result;
-
   try {
-    // Get the Questions from DB
-    result = await getQuestions({});
+    result = await getQuestions({
+      searchQuery: searchParams?.q,
+      page:searchParams.page?+searchParams.page:1,
+    });
   } catch (error) {
-    // Handle any errors that occur during the data fetching
     console.error("Error fetching questions:", error);
   }
 

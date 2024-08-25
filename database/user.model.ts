@@ -71,7 +71,7 @@ const UserSchema = new Schema<IUser>({
   saved: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Question", // Replace "SavedItem" with the actual model name for saved items
+      ref: "Question", 
     },
   ],
   joinedAt: {

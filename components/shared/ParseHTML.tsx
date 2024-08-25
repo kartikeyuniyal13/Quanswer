@@ -34,6 +34,8 @@ const ParseHTML = ({ data }: Props) => {
   useEffect(() => {
     Prism.highlightAll();
   }, []);
+
+  //The html-react-parser library is used to convert the HTML string into a format that React can render.The parse function takes the data prop (which is a string containing HTML) and converts it into React elements.
   return <div>{parse(data)}</div>;
 };
 
