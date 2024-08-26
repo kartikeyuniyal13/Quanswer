@@ -101,7 +101,8 @@ export async function getAllUsers(params: GetAllUsersParams) {
 
   try {
     connectToDatabase();
-    const { searchQuery } = params;
+    const { searchQuery, page = 1, pageSize = 10 } = params;
+
     const query = searchQuery
       ? {
         $or: [
@@ -111,8 +112,14 @@ export async function getAllUsers(params: GetAllUsersParams) {
       }
       : {};
 
-    const users = await User.find(query).sort({ createdAt: -1 });
-    return { users };
+    const totalUsers = await User.countDocuments();
+    const users = await User.find(query)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    const isNext = totalUsers > (page * pageSize);
+    return { users, isNext };
   } catch (error) {
     console.log(error);
     throw error;
@@ -159,7 +166,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 
   try {
     connectToDatabase();
-    const { clerkId,searchQuery } = params;
+    const { clerkId, searchQuery, page = 1, pageSize = 10 } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
       ? {
@@ -167,25 +174,29 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       }
       : {};
 
-    const user = await User.findOne({ clerkId }).populate({
-      path: "saved",
-      match: query,
-      options: {
-        sort: { createdAt: -1 },
-      },
-      populate: [
-        { path: "tags", model: Tag, select: "_id name" },
-        { path: "author", model: User, select: "_id clerkId name picture" },
-      ],
-    });
+    const user = await User.findOne({ clerkId })
+      .populate({
+        path: "saved",
+        match: query,
+        options: {
+          sort: { createdAt: -1 },
+          skip: ((page - 1) * pageSize),
+          limit: pageSize + 1
+        },
+        populate: [
+          { path: "tags", model: Tag, select: "_id name" },
+          { path: "author", model: User, select: "_id clerkId name picture" },
+        ],
+      });
 
     if (!user) {
       throw new Error("User not found");
     }
+    const isNext = user.saved.length > pageSize;
 
     const savedQuestions = user.saved;
 
-    return { questions: savedQuestions };
+    return { questions: savedQuestions, isNext };
   } catch (error) {
     console.log(error);
   }
@@ -194,7 +205,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 export async function getUserInfo(params: GetUserByIdParams) {
   try {
     connectToDatabase();
-    const { userId } = params;
+    const { userId, } = params;
     const user = await User.findOne({ clerkId: userId })
 
     if (!user) {
@@ -217,7 +228,7 @@ export async function getUserInfo(params: GetUserByIdParams) {
 export async function getUserQuestions(params: GetUserStatsParams) {
   try {
     connectToDatabase();
-    const { userId, page=1, pageSize = 10 } = params;
+    const { userId, page = 1, pageSize = 10 } = params;
 
     const totalQuestions = await Question.countDocuments({ author: userId });
 
@@ -231,9 +242,9 @@ export async function getUserQuestions(params: GetUserStatsParams) {
       .populate("tags", "_id name")
       .populate("author", "_id clerkId name picture");
 
-    const isNext= totalQuestions>page*pageSize;
+    const isNext = totalQuestions > page * pageSize;
 
-    return { totalQuestions, questions: userQuestions,isNext };
+    return { totalQuestions, questions: userQuestions, isNext };
   } catch (error) {
     console.log(error);
   }
@@ -248,13 +259,14 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     const totalAnswers = await Answer.countDocuments({ author: userId });
 
     const userAnswers = await Answer.find({ author: userId })
-      .sort({
-        upvotes: -1,
-      })
-      .populate("question", "_id title")
-      .populate("author", "_id clerkId name picture");
+      .sort({ upvotes: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .populate("question", "_id title").populate("author", "_id clerkId name picture");
 
-    return { totalAnswers, answers: userAnswers };
+
+    const isNext = totalAnswers > page * pageSize;
+    return { totalAnswers, answers: userAnswers, isNext };
   } catch (error) {
     console.log(error);
   }

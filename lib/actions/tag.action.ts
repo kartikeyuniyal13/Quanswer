@@ -13,7 +13,7 @@ export async function getAllTags(params: GetAllTagsParams) {
 
     try {
         connectToDatabase();
-        const { searchQuery } = params;
+        const { searchQuery,page=1,pageSize=10 } = params;
         const query: FilterQuery<typeof Tag> = {};
         if (searchQuery) {
           query.$or = [
@@ -22,8 +22,11 @@ export async function getAllTags(params: GetAllTagsParams) {
             },
           ];
         }
-        const tags = await Tag.find(query);
-        return { tags };
+        const tags = await Tag.find(query).skip((page - 1) * pageSize).limit(pageSize + 1).limit(pageSize);
+
+        const totalTags = await Tag.countDocuments(query);
+        const isNext = totalTags > page * pageSize;
+        return { tags, isNext };
     } catch (error) {
         console.log(error);
         throw new Error('Tags not found');
@@ -91,7 +94,7 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
 export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     try {
       await connectToDatabase();
-      const { tagId, searchQuery, page = 1, pageSize = 2 } = params;
+      const { tagId, searchQuery, page = 1, pageSize = 10 } = params;
   
       const skipAmount = (page - 1) * pageSize;
   

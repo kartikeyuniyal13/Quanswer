@@ -41,13 +41,18 @@ export async function createAnswer(params: CreateAnswerParams) {
 export async function getAnswers(params: GetAnswersParams) {
   try {
     connectToDatabase();
-    const { questionId } = params;
+    const { questionId,page=1,pageSize=10 } = params;
 
     const answers = await Answer.find({ question: questionId })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize )
       .populate("author", "_id clerkId name picture")
       .sort({ createdAt: -1 });
 
-    return { answers };
+      const totalAnswers = await Answer.countDocuments({ question: questionId });
+      const isNext = totalAnswers > page * pageSize;
+
+    return { answers,isNext };
   } catch (error) {
     console.log(error);
   }

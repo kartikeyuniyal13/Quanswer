@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+import { createUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ const LocalSearchbar = ({
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (search) {
-        const newUrl = formUrlQuery({
+        const newUrl = createUrlQuery({
           params: searchParams.toString(),
           key: "q",
           value: search,
