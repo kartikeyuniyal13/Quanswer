@@ -44,6 +44,7 @@ const Community = async ({searchParams}:SearchParamsProps) => {
       </section>
       <div className="mt-10">
         <Pagination
+        //Query parameters in JavaScript are always strings by default.+searchParams.page is a shortcut to convert the string into a number.
           pageNumber={searchParams.page ? +searchParams.page : 1}
           isNext={result?.isNext}
         />

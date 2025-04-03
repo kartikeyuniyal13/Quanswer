@@ -9,7 +9,7 @@ interface Props {
   isNext: boolean | undefined;
 }
 
-const Pagination = ({ pageNumber, isNext }: Props) => {
+const  Pagination = ({ pageNumber, isNext }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 

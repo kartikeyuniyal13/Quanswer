@@ -67,35 +67,24 @@ export async function deleteUser(params: DeleteUserParams) {
   try {
     connectToDatabase();
     const { clerkId } = params;
-
-    const user = await User.findOneAndDelete({ clerkId });
+    //.lean() on findOneAndDelete() to return a plain JavaScript object, ensuring _id is accessible.
+    const user = await User.findOneAndDelete({ clerkId }).lean();
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    // delete User from database
-    // Delete questions , answers, comments,etc
-
-    // get user question ids
-    // const userQuestionIds = await Question.find({ author: user._id }).distinct(
-    //   "_id"
-    // );
-
-    // delete user questions
+  
     await Question.deleteMany({ author: user._id });
 
-    // TODO: delete user answers, comments, etc
+    // TODO: delete user answers, comments, etc.
 
-    // Delete User
-    const deletedUser = await User.findByIdAndDelete(user._id);
-    return deletedUser;
+    return user; // Return the deleted user if needed
   } catch (err) {
     console.log(err);
     throw err;
   }
 }
-
 
 export async function getAllUsers(params: GetAllUsersParams) {
 
