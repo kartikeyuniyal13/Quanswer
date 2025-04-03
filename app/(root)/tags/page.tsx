@@ -1,7 +1,6 @@
 import Filter from "@/components/shared/Filter";
 import NoResults from "@/components/shared/NoResults";
 import Pagination from "@/components/shared/Pagination";
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { TagFilters } from "@/constants/filters";
 import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
@@ -17,12 +16,7 @@ const Page = async ({searchParams}:SearchParamsProps) => {
     <>
       <h1 className="h1-bold text-dark100_light900">Tags</h1>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        <LocalSearchbar
-          route="/tags"
-          iconPosition="left"
-          imgSrc="/assets/icons/search.svg"
-          placeholder="Search by tag name..."
-        />
+        
 
         <Filter
           filters={TagFilters}

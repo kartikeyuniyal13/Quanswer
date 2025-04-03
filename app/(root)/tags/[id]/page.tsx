@@ -2,7 +2,7 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import NoResults from "@/components/shared/NoResults";
 import Pagination from "@/components/shared/Pagination";
 
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
 import { URLProps } from "@/types";
 import React from "react";
@@ -19,13 +19,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
 
       {/* SEARCHBARS */}
       <div className="mt-11 w-full">
-        <LocalSearchbar
-          route={`/tags/${params.id}`}
-          iconPosition="left"
-          imgSrc="/assets/icons/search.svg"
-          placeholder="Search questions associated with this tag"
-          otherClasses="flex-1"
-        />
+ 
       </div>
 
       {/* QUESTION CARD */}

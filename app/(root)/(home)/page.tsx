@@ -5,7 +5,7 @@ import Filter from "@/components/shared/Filter";
 import NoResults from "@/components/shared/NoResults";
 
 import { Button } from "@/components/ui/button";
-import LocalSearchbar from "../../../components/shared/search/LocalSearchbar";
+
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
@@ -36,13 +36,7 @@ export default async function Home({searchParams}:SearchParamsProps) {
 
       {/* SEARCHBARS */}
       <div className="mt-11 flex h-40 flex-col justify-between gap-2  max-md:flex-row max-sm:flex-col max-sm:justify-evenly sm:items-start">
-        <LocalSearchbar
-          route="/"
-          iconPosition="left"
-          imgSrc="/assets/icons/search.svg"
-          placeholder="Search questions"
-          otherClasses="flex-1"
-        />
+    
         <Filter
           filters={HomePageFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
