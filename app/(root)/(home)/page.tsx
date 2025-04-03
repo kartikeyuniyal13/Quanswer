@@ -5,7 +5,7 @@ import Filter from "@/components/shared/Filter";
 import NoResults from "@/components/shared/NoResults";
 
 import { Button } from "@/components/ui/button";
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+import LocalSearchbar from "../../../components/shared/search/LocalSearchbar";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
