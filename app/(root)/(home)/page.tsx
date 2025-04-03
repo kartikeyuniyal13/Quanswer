@@ -1,9 +1,11 @@
+export const dynamic = "force-dynamic";
 import HomeFilters from "@/components/home/HomeFilters";
 import QuestionCard from "@/components/cards/QuestionCard";
 import Filter from "@/components/shared/Filter";
 import NoResults from "@/components/shared/NoResults";
-import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
+
 import { Button } from "@/components/ui/button";
+import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import { getQuestions } from "@/lib/actions/question.action";
