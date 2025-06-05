@@ -1,6 +1,7 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResults from "@/components/shared/NoResults";
 import Pagination from "@/components/shared/Pagination";
+import LocalSearchbar from "@/components/shared/LocalSearchbar";
 
 
 import { getQuestionsByTagId } from "@/lib/actions/tag.action";
@@ -18,9 +19,17 @@ const Page = async ({ params, searchParams }: URLProps) => {
       <h1 className="h1-bold text-dark100_light900">{result.tagTitle}</h1>
 
       {/* SEARCHBARS */}
-      <div className="mt-11 w-full">
- 
-      </div>
+      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+      
+          <LocalSearchbar
+            route={`/tags/${params.id}`}
+            iconPosition="left"
+            imgSrc="/assets/icons/search.svg"
+            placeholder={`Search for questions with ${result.tagTitle} tag`}
+            otherClasses="flex-1"
+          />
+        </div>
+   
 
       {/* QUESTION CARD */}
       <div className="mt-10 flex w-full flex-col gap-6 ">

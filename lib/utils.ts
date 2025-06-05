@@ -71,7 +71,7 @@ interface UrlQueryParams{
   value:string|null;
 }
 
-/*The formUrlQuery function is used to construct a new URL with updated query parameters based on the current URL and the specified key-value pair,keeping filters,categories the same */
+/*The createUrlQuery function is used to construct a new URL with updated query parameters based on the current URL and the specified key-value pair,keeping filters,categories the same */
 export const createUrlQuery=({params,key,value}:UrlQueryParams)=>{
   const currentUrl=qs.parse(params);
   if(value){

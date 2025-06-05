@@ -21,7 +21,7 @@ import { FilterQuery } from "mongoose";
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
-    const {searchQuery,page=1,pageSize=10}=params;
+    const {searchQuery,filter,page=1,pageSize=10}=params;
     const query:FilterQuery<typeof Question>={};
 
     if(searchQuery){
@@ -30,10 +30,27 @@ export async function getQuestions(params: GetQuestionsParams) {
         {content:{$regex:new RegExp(searchQuery,'i')}}
       ]
     }
+
+    let sortOptions={}
+
+    switch(filter){
+      case "newest":
+        sortOptions={createdAt :-1}
+        break;
+      case "frequent":
+        sortOptions={views:-1}
+        break;
+      case "unanswered":
+        query.answers={$size:0}
+        break;
+      
+        default:
+        break;
+    }
     
     const totalQuestions=await Question.countDocuments(query);
     const questions = await Question.find(query)
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .populate({

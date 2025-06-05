@@ -6,6 +6,7 @@ import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import LocalSearchbar from "@/components/shared/LocalSearchbar";
 
 const  Collection=async ({ searchParams }: SearchParamsProps) =>{
     
@@ -22,6 +23,13 @@ const  Collection=async ({ searchParams }: SearchParamsProps) =>{
 
       {/* SEARCHBARS */}
       <div className="mt-11 flex justify-between gap-2  max-md:flex-row max-sm:flex-col max-sm:justify-evenly sm:items-start">
+        <LocalSearchbar
+          route="/collection"
+          iconPosition="left"
+          imgSrc="/assets/icons/search.svg"
+          placeholder="Search among your saved questions"
+          otherClasses="flex-1"
+        />
      
         <Filter
           filters={QuestionFilters}

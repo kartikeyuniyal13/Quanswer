@@ -3,6 +3,7 @@ import HomeFilters from "@/components/home/HomeFilters";
 import QuestionCard from "@/components/cards/QuestionCard";
 import Filter from "@/components/shared/Filter";
 import NoResults from "@/components/shared/NoResults";
+import LocalSearchbar from "@/components/shared/LocalSearchbar";
 
 import { Button } from "@/components/ui/button";
 
@@ -17,6 +18,7 @@ export default async function Home({searchParams}:SearchParamsProps) {
   try {
     result = await getQuestions({
       searchQuery: searchParams?.q,
+      filter:searchParams?.filter,
       page:searchParams.page?+searchParams.page:1,
     });
   } catch (error) {
@@ -36,6 +38,13 @@ export default async function Home({searchParams}:SearchParamsProps) {
 
       {/* SEARCHBARS */}
       <div className="mt-11 flex h-40 flex-col justify-between gap-2  max-md:flex-row max-sm:flex-col max-sm:justify-evenly sm:items-start">
+        <LocalSearchbar
+        route="/"
+        iconPosition="left"
+        imgSrc="/assets/icons/search.svg"
+        placeholder="Search for questions"
+        otherClasses="flex-1"
+        />
     
         <Filter
           filters={HomePageFilters}
@@ -66,9 +75,7 @@ export default async function Home({searchParams}:SearchParamsProps) {
         ) : (
           <NoResults
             title=" There’s no question to show"
-            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the
-          discussion. our query could be the next big thing others learn from. Get
-          involved! 💡"
+            description="Ask a question or try searching for something else."
             link="/ask-question"
             linkText="Ask a Question"
           />

@@ -6,17 +6,25 @@ import { getAllTags } from "@/lib/actions/tag.action";
 import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 import React from "react";
+import LocalSearchbar from "@/components/shared/LocalSearchbar";
 
-const Page = async ({searchParams}:SearchParamsProps) => {
+const Page = async ({ searchParams }: SearchParamsProps) => {
   const results = await getAllTags({
-    searchQuery:searchParams.q,
-    page:searchParams.page?+searchParams.page:1
+    searchQuery: searchParams.q,
+    page: searchParams.page ? +searchParams.page : 1
   });
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Tags</h1>
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
-        
+        <LocalSearchbar
+          route="/tags"
+          iconPosition="left"
+          imgSrc="/assets/icons/search.svg"
+          placeholder="Search for tags"
+          otherClasses="flex-1"
+        />
+
 
         <Filter
           filters={TagFilters}
@@ -56,12 +64,12 @@ const Page = async ({searchParams}:SearchParamsProps) => {
           />
         )}
       </section>
-     <div>
+      <div>
         <Pagination
           pageNumber={searchParams.page ? +searchParams.page : 1}
           isNext={results?.isNext}
-          />
-     </div>
+        />
+      </div>
     </>
   );
 };
